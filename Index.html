@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href=styles.css>
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+    <div class="game-container">
+        <div class="container">
+            <h1 class="title">Tic <span>Tac</span> Toe</h1>
+            <div class="status-action">
+                <div class="status">x is next</div>
+                <div class="reset">Reset</div>
+            </div>
+            <div class="game-grid">
+                <div id="topLeft" class="game-cell"></div>
+                <div id="topMiddle" class="game-cell"></div>
+                <div id="topRight" class="game-cell"></div>
+                <div id="middleLeft" class="game-cell"></div>
+                <div id="middleMiddle" class="game-cell"></div>
+                <div id="middleRight" class="game-cell"></div>
+                <div id="bottomLeft" class="game-cell"></div>
+                <div id="bottomMiddle" class="game-cell"></div>
+                <div id="bottomRight" class="game-cell"></div>
+            </div>
+        </div>
+        <div class="link">
+            <input type="text" disabled value="" id="inviteLink">
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-database.js"></script>
+    <script src="fireBaseDatabase.js"></script>
+    <script src="app.js"></script>
+    <script>
+        window.onbeforeunload = function(e) {
+            handleReset(event);
+            this.deleteGame();
+            return null;
+        };
+    </script>
+</body>
+</html>
