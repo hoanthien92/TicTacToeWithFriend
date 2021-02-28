@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href=styles.css>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Tic Tac Toe</title>
 </head>
 <body>
     <div class="game-container">
         <div class="container">
-            <h1 class="title">Tic <span>Tac</span> Toe</h1>
+            <h1 class="title">Tic <span>Tac</span> Toe With Friends</h1>
             <div class="status-action">
                 <div class="status">x is next</div>
                 <div class="reset">Reset</div>
@@ -26,8 +27,10 @@
                 <div id="bottomRight" class="game-cell"></div>
             </div>
         </div>
-        <div class="link">
-            <input type="text" disabled value="" id="inviteLink">
+        <div class="link" id="inviteLink">
+            <span>Invite Link</span>
+            <input id="inviteLinkInput" type="text" disabled value="">
+            <i class="fa copy-button">&#xf0c5;</i>
         </div>
     </div>
 

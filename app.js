@@ -5,6 +5,7 @@ const statusDiv = document.querySelector('.status');
 const resetDiv = document.querySelector('.reset');
 const cellDivs = document.querySelectorAll('.game-cell');
 const inviteLink = document.querySelector('#inviteLink');
+const copyButton = document.querySelector('.copy-button');
 
 //game constants;
 const xSymbol = '✕';
@@ -25,6 +26,7 @@ function createGameStatus() {
     this.bottomMiddle = '';
     this.bottomRight = '',
     this.xIsNext = true;
+    this.resetEvent = false;
 }
 
 let gameIsLive = true;
@@ -119,7 +121,7 @@ const checkGameStatus = (fetchData) => {
 };
 
 //event Handlers
-const handleReset = (e) => {
+handleReset = (e) => {
     gameStatus = new createGameStatus();
     gameIsLive = true;
     this.gameStatus.xIsNext = true;
@@ -132,7 +134,7 @@ const handleReset = (e) => {
     }
 
     if (!urlParams.get('gameId')) {
-        updateGameStatus();
+        updateGameStatus(true);
     }
 };
 
@@ -162,6 +164,13 @@ for (const cellDiv of cellDivs) {
     cellDiv.addEventListener('click', handleCellClick)
 }
 
+copyButton.addEventListener('click', copyFunction);
+function copyFunction(){
+    var copiedText = document.getElementById("inviteLinkInput");
+    window.prompt("Copy to clipboard: Ctrl+C, Enter", copiedText.value);
+
+}
+
 function createNewGame() {
     var dataRef = firebase.database().ref('games/' + existingGameId);
     dataRef.set({
@@ -174,7 +183,8 @@ function createNewGame() {
         bottomLeft: '',
         bottomMiddle: '',
         bottomRight: '',
-        xIsNext: true
+        xIsNext: true,
+        resetEvent: false
     });
     dataRef.on('value', function (snapshot) {
         if (snapshot.val()) {
@@ -185,7 +195,7 @@ function createNewGame() {
 
 }
 
-function updateGameStatus(){
+function updateGameStatus(resetGame = false){
     firebase.database().ref('games/' + existingGameId).set({
         topLeft: this.gameStatus.topLeft,
         topMiddle: this.gameStatus.topMiddle,
@@ -196,7 +206,8 @@ function updateGameStatus(){
         bottomLeft: this.gameStatus.bottomLeft,
         bottomMiddle: this.gameStatus.bottomMiddle,
         bottomRight: this.gameStatus.bottomRight,
-        xIsNext: this.gameStatus.xIsNext
+        xIsNext: this.gameStatus.xIsNext,
+        resetEvent: resetGame
     });
 }
 
@@ -233,16 +244,22 @@ function liveUpdateGame() {
 const urlParams = new URLSearchParams(location.search);
 var existingGameId = urlParams.get('gameId');
 if (existingGameId) {
+    resetDiv.classList.add("hide-button");
+    inviteLink.classList.add("hide-button");
     var existingGame = firebase.database().ref('games/' + existingGameId);
     existingGame.on('value', function (snapshot) {
         if (snapshot.val()) {
             this.gameStatus = snapshot.val();
-            this.liveUpdateGame();
+            if(this.gameStatus.resetEvent){
+                this.handleReset();
+            }else{
+                this.liveUpdateGame();
+            }            
         }
     });
 } else {
     //Database storage for turns
     this.existingGameId = Math.random().toString(36).substring(2, 9);
-    this.inviteLink.value = location.href + "?gameId=" + this.existingGameId;
+    this.inviteLink.querySelector("input").value = location.href + "?gameId=" + this.existingGameId;
     createNewGame();
 }

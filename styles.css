@@ -57,6 +57,7 @@ body{
     justify-content: center;
     align-items: center;
     width: 200px;
+    caret-color: transparent;
 }
 .x::after{
     content: '✕';
@@ -93,4 +94,17 @@ body{
     display: flex;
     justify-content: center;
     margin-top:20px;
+}
+.hide-button{
+    visibility: hidden;
+}
+.copy-button{
+    font-size: 16px;
+    margin-left:10px;
+    caret-color: transparent;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#inviteLink input {
+    width: 100%;
 }
